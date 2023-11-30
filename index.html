@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tabla de datos</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <table id="tablaDatos">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    // Obtener los datos de la API
+    fetch('https://api.estadisticasbcra.com/uva', {
+      headers: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzI4MTY2NTksInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJmZWRlLmRpckBnbWFpbC5jb20ifQ.--p1H7oglT02xQ2g5f_iqIi-YRyxitN1f-LjynJIFDSGe2jgEQ4A5XeH9oumNh2GwoArB2TKglUAvnrN0mlByA'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Obtener la tabla
+      const tabla = document.getElementById('tablaDatos');
+
+      // Obtener el cuerpo de la tabla
+      const tbody = tabla.getElementsByTagName('tbody')[0];
+
+      // Recorrer los datos y agregar filas a la tabla
+      data.forEach(dato => {
+        const fila = document.createElement('tr');
+        const fecha = document.createElement('td');
+        fecha.textContent = dato.fecha;
+        const valor = document.createElement('td');
+        valor.textContent = dato.valor;
+        fila.appendChild(fecha);
+        fila.appendChild(valor);
+        tbody.appendChild(fila);
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  </script>
+</body>
+</html>
